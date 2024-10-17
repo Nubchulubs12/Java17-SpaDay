@@ -11,17 +11,17 @@
 <form action="/user" method="post">
 
         <label>Username:</label>
-         <input type="text" name="userName">
-            <br>
+         <input type="text" name="username" th:value="${username}" required>
+
         <label>Email:</label>
-         <input type="email" name="email">
-            <br>
+         <input type="email" name="email" th:value="${email}" required>
+
         <label>Password</label>
-            <input type="password" name="password">
-            <br>
+            <input type="password" name="password" required>
+
         <label>Verify Password:</label>
-        <input type="password" name="verifyPassword">
-            <br>
+        <input type="password" name="verifyPassword" required>
+
         <input type="submit" value="submit">
         <p th:if="${errorMessage}" th:text="${errorMessage}"></p>
 

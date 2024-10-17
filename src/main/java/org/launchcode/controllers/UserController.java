@@ -1,24 +1,23 @@
 package org.launchcode.controllers;
 
+import org.launchcode.UserData;
 import org.launchcode.models.User;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
-    @GetMapping("/add")
+    @GetMapping("")
     public String displayADDUserForm() {
         return "user/add";
     }
     @PostMapping("")
     public String processAddUserForm(Model model, @ModelAttribute User user, String verifyPassword) {
-        if (user.getPassword()==null || verifyPassword ==null || !user.getPassword().equals(verifyPassword)) {
+        if (!user.getPassword().equals(verifyPassword)) {
 
             model.addAttribute("errorMessage", "Passwords do not match. Please try again.");
             model.addAttribute("userame", user.getUsername());
@@ -26,12 +25,17 @@ public class UserController {
             return "/user/add";
 
         } else {
-
-            model.addAttribute("userName", user.getUsername());
-
+            UserData.add(user);
+            model.addAttribute("username", user);
+            model.addAttribute("users", UserData.getAll());
             return "/user/index";
 
         }
 
+    }
+    @GetMapping("/details/{id}")
+    public String displayDetails(@PathVariable int id, Model model) {
+        model.addAttribute("user", UserData.getById(id));
+        return "/user/details";
     }
 }
